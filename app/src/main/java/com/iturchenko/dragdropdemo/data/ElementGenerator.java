@@ -2,9 +2,6 @@ package com.iturchenko.dragdropdemo.data;
 
 import java.util.Random;
 
-/**
- * Created by Igor on 29.08.2016.
- */
 public class ElementGenerator {
     private static String[] colors = new String[] {"White", "Black", "Blue", "Green","Red","Brown","Purple","Orange", "Yellow", "Grey"};
     private static String[] animals = new String[] {"Albatross", "Bear", "Camel", "Deer", "Eagle", "Falcon", "Gecko", "Hamster", "Iguana", "Jackal"};
