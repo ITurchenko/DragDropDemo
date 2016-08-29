@@ -7,6 +7,10 @@ public class DataElement {
     public String value;
     public int id;
 
+    public DataElement(String value) {
+        this.value = value;
+    }
+
     public DataElement(String value, int id) {
         this.value = value;
         this.id = id;

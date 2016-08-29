@@ -12,8 +12,11 @@ public class DataProvider {
     private List<DataElement> values = new ArrayList<>();
 
     public DataProvider(MainActivity mainActivity) {
+        ElementGenerator generator = new ElementGenerator();
         for (int i = 0; i < 30; i++) {
-            values.add(new DataElement(i+"", i));
+            DataElement element = generator.createNew(i);
+            element.id = i;
+            values.add(element);
         }
     }
 
