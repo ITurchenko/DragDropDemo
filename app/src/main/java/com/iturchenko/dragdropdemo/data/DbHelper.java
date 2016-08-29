@@ -9,13 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-public class DbHelper extends SQLiteOpenHelper implements BaseColumns {
+class DbHelper extends SQLiteOpenHelper implements BaseColumns {
     private static final String DATABASE_NAME = "mydb";
     private static final int DATABASE_VERSION = 1;
 
@@ -70,6 +67,17 @@ public class DbHelper extends SQLiteOpenHelper implements BaseColumns {
         getWritableDatabase().insert(TABLE_NAME, null, contentValues);
     }
 
+    public void update(DataElement element) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NEXT, element.nextID);
+        contentValues.put(COLUMN_PREV, element.prevID);
+
+        SQLiteDatabase database = getWritableDatabase();
+        database.update(TABLE_NAME, contentValues, _ID + " = ?", new String[] {Integer.toString(element.id)});
+        database.close();
+    }
+
+    @Nullable
     public DataElement getElement(int id) {
         DataElement result = null;
 
@@ -91,15 +99,79 @@ public class DbHelper extends SQLiteOpenHelper implements BaseColumns {
         return result;
     }
 
-    public List<DataElement> getAll() {
-        ArrayList<DataElement> resultCollection = new ArrayList<>();
+    @Nullable
+    public DataElement getFirst() {
+        DataElement result = null;
 
-        Cursor cursor = getReadableDatabase().query(TABLE_NAME, STRUCTURE, null, null, null, null, null);
-        while (cursor.moveToFirst()) {
-            resultCollection.add(fillFromCursor(cursor));
+        Cursor cursor = getReadableDatabase().query(TABLE_NAME, STRUCTURE, COLUMN_PREV + " = ?", new String[]{"-1"}, null, null, null);
+        if (cursor.moveToFirst()) {
+            result = fillFromCursor(cursor);
+        }
+        cursor.close();
+        return result;
+    }
+
+    @Nullable
+    public DataElement getLast() {
+        DataElement result = null;
+
+        Cursor cursor = getReadableDatabase().query(TABLE_NAME, STRUCTURE, COLUMN_NEXT + " = ?", new String[]{"-1"}, null, null, null);
+        if (cursor.moveToFirst()) {
+            result = fillFromCursor(cursor);
+        }
+        cursor.close();
+        return result;
+    }
+
+    public DataElement removeFromList(int id) {
+        DataElement element = getElement(id);
+
+        DataElement prev = getElement(element.prevID);
+        DataElement next = getElement(element.nextID);
+
+        if (prev != null) prev.nextID = next == null ? -1 : next.id;
+        if (next != null) next.prevID = prev == null ? -1 : prev.id;
+
+        if (prev != null) update(prev);
+        if (next != null) update(next);
+
+        return element;
+    }
+
+    public void insertBefore(DataElement element, DataElement elementBefore) {
+        if (elementBefore == null) {
+            insertAfter(element, getLast());
+            return;
         }
 
-        cursor.close();
-        return resultCollection;
+        element.nextID = elementBefore.id;
+        element.prevID = elementBefore.prevID;
+
+        update(element);
+
+        DataElement prev = getElement(elementBefore.prevID);
+        if (prev != null) {
+            prev.nextID = element.id;
+            update(prev);
+        }
+
+        elementBefore.prevID = element.id;
+        update(elementBefore);
+    }
+
+    public void insertAfter(DataElement element, DataElement elementAfter) {
+        element.nextID = elementAfter.nextID;
+        element.prevID = elementAfter.id;
+
+        update(element);
+
+        DataElement next = getElement(elementAfter.nextID);
+        if (next != null) {
+            next.prevID = element.id;
+            update(next);
+        }
+
+        elementAfter.nextID = element.id;
+        update(elementAfter);
     }
 }

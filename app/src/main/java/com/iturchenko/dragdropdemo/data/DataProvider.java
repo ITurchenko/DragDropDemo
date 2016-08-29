@@ -1,6 +1,5 @@
 package com.iturchenko.dragdropdemo.data;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.iturchenko.dragdropdemo.gui.MainActivity;
@@ -13,7 +12,7 @@ import java.util.Map;
 public class DataProvider {
     private static final int MAX_ELEMENT_COUNT = 5;
 
-    private List<DataElement> values = new ArrayList<>();
+    private List<Integer> orderList = new ArrayList<>();
     private final DbHelper dbHelper;
 
     public DataProvider(MainActivity mainActivity) {
@@ -35,45 +34,52 @@ public class DataProvider {
         for (int i = 0; i < MAX_ELEMENT_COUNT; i++) {
             DataElement element = generator.createNew(i);
             element.id = i;
-            values.add(element);
 
             if (prev != null) {
                 prev.nextID = element.id;
                 element.prevID = prev.id;
+
+                Log.e("AA","Update" + prev);
+                dbHelper.update(prev);
             }
             prev = element;
 
+            Log.e("AA","Save "+element);
+
             dbHelper.insert(element);
+            orderList.add(element.id);
         }
     }
 
     private void loadFromDb() {
-        Map<Integer, DataElement> map = new HashMap<>();
-        for (DataElement element : dbHelper.getAll()) {
-            Log.e("AA","Load "+element);
-            map.put(element.prevID, element);
+        DataElement element = dbHelper.getFirst();
+        while (element != null) {
+            orderList.add(element.id);
+            Log.e("AA","Got -> "+element);
+            element = dbHelper.getElement(element.nextID);
         }
-
-        Log.e("AA","-> "+map);
     }
 
     public int getItemCount() {
-//        return (int) dbHelper.getItemCount();
-        return 0;
+        return (int) dbHelper.getItemCount();
+//        return 0;
     }
 
     public DataElement get(int position) {
-        return values.get(position);
+        return dbHelper.getElement(getItemId(position));
     }
 
-    public long getItemId(int position) {
-        return values.get(position).id;
+    public int getItemId(int position) {
+        if (position < 0 || position >= orderList.size()) return -1;
+        return orderList.get(position);
     }
 
     public void moveItem(int fromPosition, int toPosition) {
-        Log.e("AA", "Move from "+fromPosition+" to "+toPosition);
+        Integer id = orderList.remove(fromPosition);
 
-        DataElement element = values.remove(fromPosition);
-        values.add(toPosition, element);
+        DataElement dataElement = dbHelper.removeFromList(id);
+        dbHelper.insertBefore(dataElement, get(toPosition));
+
+        orderList.add(toPosition, id);
     }
 }
