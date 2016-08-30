@@ -1,15 +1,16 @@
-package com.iturchenko.dragdropdemo.data;
+package com.iturchenko.dragdropdemo.data.controllers;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.iturchenko.dragdropdemo.data.model.DataElement;
 import com.iturchenko.dragdropdemo.utils.Gears;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class AsyncInitTask extends AsyncTask<Void, Void, List<Integer>> {
-    private static final int MAX_ELEMENT_COUNT = 20;
+    private static final int MAX_ELEMENT_COUNT = 100;
 
     private DbHelper dbHelper;
     private CompleteListener listener;
@@ -21,7 +22,7 @@ class AsyncInitTask extends AsyncTask<Void, Void, List<Integer>> {
 
     @Override
     protected List<Integer> doInBackground(Void... voids) {
-        Gears.imitateLongCalculations();
+        Gears.imitateLongCalculations(1000);
 
         if (dbHelper.getItemCount() == 0) {
             return generateStubData();

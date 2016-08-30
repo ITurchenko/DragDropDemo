@@ -1,4 +1,6 @@
-package com.iturchenko.dragdropdemo.data;
+package com.iturchenko.dragdropdemo.data.controllers;
+
+import com.iturchenko.dragdropdemo.data.model.DataElement;
 
 import java.util.Random;
 

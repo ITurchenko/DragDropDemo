@@ -1,4 +1,4 @@
-package com.iturchenko.dragdropdemo.data;
+package com.iturchenko.dragdropdemo.data.model;
 
 public class DataElement {
     public String value;

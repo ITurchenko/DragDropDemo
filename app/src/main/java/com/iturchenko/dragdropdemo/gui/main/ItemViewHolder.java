@@ -1,11 +1,11 @@
-package com.iturchenko.dragdropdemo.gui;
+package com.iturchenko.dragdropdemo.gui.main;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 import com.iturchenko.dragdropdemo.R;
-import com.iturchenko.dragdropdemo.data.DataElement;
+import com.iturchenko.dragdropdemo.data.model.DataElement;
 
 class ItemViewHolder extends AbstractDraggableItemViewHolder {
     private final TextView tvContent;
@@ -17,6 +17,6 @@ class ItemViewHolder extends AbstractDraggableItemViewHolder {
     }
 
     public void bind(DataElement dataElement) {
-        tvContent.setText(dataElement.value);
+        tvContent.setText(dataElement != null ? dataElement.value : "...");
     }
 }

@@ -1,4 +1,4 @@
-package com.iturchenko.dragdropdemo.gui;
+package com.iturchenko.dragdropdemo.gui.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.iturchenko.dragdropdemo.R;
-import com.iturchenko.dragdropdemo.data.DataController;
+import com.iturchenko.dragdropdemo.data.controllers.DataController;
 
 public class MainActivity extends AppCompatActivity {
     @Override

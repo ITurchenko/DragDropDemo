@@ -1,8 +1,9 @@
-package com.iturchenko.dragdropdemo.data;
+package com.iturchenko.dragdropdemo.data.controllers;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.iturchenko.dragdropdemo.gui.MainActivity;
+import com.iturchenko.dragdropdemo.data.model.DataElement;
+import com.iturchenko.dragdropdemo.gui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class DataController implements AsyncInitTask.CompleteListener {
         return elementCount;
     }
 
-    public DataElement get(int position) {
-        return dbHelper.getElement(getItemId(position));
+    public void get(int position, ItemRequestCompleteListener completeListener) {
+        new AsyncGetItemTask(dbHelper, getItemId(position), completeListener).execute();
     }
 
     public int getItemId(int position) {
@@ -36,7 +37,7 @@ public class DataController implements AsyncInitTask.CompleteListener {
         Integer id = orderList.remove(fromPosition);
 
         DataElement dataElement = dbHelper.removeFromList(id);
-        dbHelper.insertBefore(dataElement, get(toPosition));
+        dbHelper.insertBefore(dataElement, dbHelper.getElement(getItemId(toPosition)));
 
         orderList.add(toPosition, id);
     }

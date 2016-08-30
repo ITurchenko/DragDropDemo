@@ -1,4 +1,4 @@
-package com.iturchenko.dragdropdemo.data;
+package com.iturchenko.dragdropdemo.data.controllers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.iturchenko.dragdropdemo.data.model.DataElement;
 
 class DbHelper extends SQLiteOpenHelper implements BaseColumns {
     private static final String DATABASE_NAME = "mydb";
