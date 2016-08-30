@@ -8,9 +8,9 @@ import com.iturchenko.dragdropdemo.utils.Gears;
 class AsyncGetItemTask extends AsyncTask<Void, Void, DataElement> {
     private final DbHelper dbHelper;
     private final Integer id;
-    private final ItemRequestCompleteListener completeListener;
+    private final DataController.ItemRequestCompleteListener completeListener;
 
-    public AsyncGetItemTask(DbHelper dbHelper, Integer id, ItemRequestCompleteListener completeListener) {
+    public AsyncGetItemTask(DbHelper dbHelper, Integer id, DataController.ItemRequestCompleteListener completeListener) {
         this.dbHelper = dbHelper;
         this.id = id;
         this.completeListener = completeListener;

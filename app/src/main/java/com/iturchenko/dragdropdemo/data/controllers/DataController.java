@@ -3,6 +3,7 @@ package com.iturchenko.dragdropdemo.data.controllers;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.iturchenko.dragdropdemo.data.model.DataElement;
 import com.iturchenko.dragdropdemo.gui.main.MainActivity;
 
 import java.util.ArrayList;
@@ -59,5 +60,11 @@ public class DataController {
 
     public void setAdapter(RecyclerView.Adapter adapter) {
         this.adapter = adapter;
+    }
+
+    //------------------------------------------------------------------------------------
+
+    public interface ItemRequestCompleteListener {
+        void onDone(DataElement dataElement);
     }
 }
