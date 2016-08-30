@@ -19,12 +19,15 @@ class AsyncGetItemTask extends AsyncTask<Void, Void, DataElement> {
     @Override
     protected DataElement doInBackground(Void... voids) {
         Gears.imitateLongCalculations(50);
+        if (isCancelled()) return null;
         return dbHelper.getElement(id);
     }
 
     @Override
     protected void onPostExecute(DataElement dataElement) {
         super.onPostExecute(dataElement);
-        completeListener.onDone(dataElement);
+        if (!isCancelled()) {
+            completeListener.onDone(dataElement);
+        }
     }
 }

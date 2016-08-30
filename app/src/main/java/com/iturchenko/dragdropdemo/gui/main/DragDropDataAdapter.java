@@ -1,5 +1,6 @@
 package com.iturchenko.dragdropdemo.gui.main;
 
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +9,9 @@ import android.view.ViewGroup;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.iturchenko.dragdropdemo.R;
+import com.iturchenko.dragdropdemo.data.controllers.DataController;
 import com.iturchenko.dragdropdemo.data.controllers.ItemRequestCompleteListener;
 import com.iturchenko.dragdropdemo.data.model.DataElement;
-import com.iturchenko.dragdropdemo.data.controllers.DataController;
 
 class DragDropDataAdapter extends RecyclerView.Adapter<ItemViewHolder> implements DraggableItemAdapter<ItemViewHolder> {
     private DataController dataController;
@@ -33,12 +34,14 @@ class DragDropDataAdapter extends RecyclerView.Adapter<ItemViewHolder> implement
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         holder.bind(null);
 
-        dataController.get(position, new ItemRequestCompleteListener() {
+        AsyncTask asyncTask = dataController.get(position, new ItemRequestCompleteListener() {
             @Override
             public void onDone(DataElement dataElement) {
                 holder.bind(dataElement);
+                holder.setAsyncTask(null);
             }
         });
+        holder.setAsyncTask(asyncTask);
     }
 
     @Override

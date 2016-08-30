@@ -1,7 +1,6 @@
 package com.iturchenko.dragdropdemo.data.controllers;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.iturchenko.dragdropdemo.data.model.DataElement;
 import com.iturchenko.dragdropdemo.utils.Gears;
@@ -44,12 +43,9 @@ class AsyncInitTask extends AsyncTask<Void, Void, List<Integer>> {
                 prev.nextID = element.id;
                 element.prevID = prev.id;
 
-                Log.e("AA","Update" + prev);
                 dbHelper.update(prev);
             }
             prev = element;
-
-            Log.e("AA","Save "+element);
 
             dbHelper.insert(element);
             orderList.add(element.id);
@@ -63,7 +59,6 @@ class AsyncInitTask extends AsyncTask<Void, Void, List<Integer>> {
         DataElement element = dbHelper.getFirst();
         while (element != null) {
             orderList.add(element.id);
-            Log.e("AA","Got -> "+element);
             element = dbHelper.getElement(element.nextID);
         }
 
