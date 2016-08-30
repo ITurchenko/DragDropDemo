@@ -1,18 +1,15 @@
 package com.iturchenko.dragdropdemo.gui;
 
-import android.graphics.drawable.NinePatchDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.iturchenko.dragdropdemo.R;
-import com.iturchenko.dragdropdemo.data.DataProvider;
+import com.iturchenko.dragdropdemo.data.DataController;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -20,12 +17,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DataProvider dataProvider = new DataProvider(this);
+        DataController dataController = new DataController(this);
 
-        initRecyclerView(dataProvider);
+        initRecyclerView(dataController);
     }
 
-    private void initRecyclerView(DataProvider dataProvider) {
+    private void initRecyclerView(DataController dataController) {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerViewDragDropManager.setInitiateOnMove(false);
 
         //adapter
-        final DragDropDataAdapter myItemAdapter = new DragDropDataAdapter(dataProvider);
+        final DragDropDataAdapter myItemAdapter = new DragDropDataAdapter(dataController);
 
         RecyclerView.Adapter mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(myItemAdapter);
 

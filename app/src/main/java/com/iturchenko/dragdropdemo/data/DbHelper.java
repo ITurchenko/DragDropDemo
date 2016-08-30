@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 class DbHelper extends SQLiteOpenHelper implements BaseColumns {
     private static final String DATABASE_NAME = "mydb";
